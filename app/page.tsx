@@ -13,6 +13,8 @@ import ChordDictionary from '@/components/ChordDictionary'
 import StemsSeparator from '@/components/StemsSeparator'
 import LyricsView from '@/components/LyricsView'
 import MidiExport from '@/components/MidiExport'
+import ChordSyncDisplay from '@/components/ChordSyncDisplay'
+import ChordSheetEditor from '@/components/ChordSheetEditor'
 import { analyzeAudio, type AnalysisResult } from '@/lib/audioAnalysis'
 
 type Tab = 'chords' | 'dictionary' | 'stems' | 'lyrics' | 'midi'
@@ -267,6 +269,23 @@ export default function HomePage() {
                 totalChords={analysis.chords.length}
                 uniqueChords={new Set(analysis.chords.map(c => c.chord).filter(c => c !== 'N/A')).size}
               />
+
+              {/* Sincronização de Acordes em Tempo Real */}
+              <ChordSyncDisplay
+                chords={analysis.chords}
+                currentTime={currentTime}
+                isPlaying={isPlaying}
+              />
+
+              {/* Botão de Exportar Cifra */}
+              <div className="flex justify-center">
+                <ChordSheetEditor
+                  chords={analysis.chords}
+                  songTitle={fileName || 'Sem Título'}
+                  bpm={analysis.bpm}
+                  musicalKey={analysis.key}
+                />
+              </div>
 
               {/* Tabs */}
               <div className="glass rounded-2xl overflow-hidden">
